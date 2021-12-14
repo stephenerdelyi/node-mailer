@@ -1,17 +1,6 @@
-const http = require('http');
-
-const hostname = '127.0.0.1';
-const port = 3000;
-
-function getPort() {
-    let port = process.env.PORT;
-
-    if(port == null || port == "") {
-        port = 8000;
-    }
-
-    return port;
-}
+var express = require('express');
+var app = express();
+var path = require('path');
 
 function sendMail() {
     let nodemailer = require('nodemailer');
@@ -40,29 +29,29 @@ function sendMail() {
     });
 }
 
-const server = http.createServer((request, response) => {
-  response.setHeader('Content-Type', 'text/plain');
+app.get('/', function (request, response) {
+    response.setHeader('Content-Type', 'text/plain');
 
-  if(request.method == 'POST') {
-      this.params = '';
+    if(request.method == 'POST') {
+        this.params = '';
 
-      request.on('data', (chunck) => {
-        this.params += chunck;
-      });
+        request.on('data', (chunck) => {
+          this.params += chunck;
+        });
 
-      request.on('end', () => {
-        this.params = JSON.parse(this.params);
-        response.statusCode = 200;
-      });
-  } else {
-      //response.statusCode = 403;
-  }
+        request.on('end', () => {
+          this.params = JSON.parse(this.params);
+          response.statusCode = 200;
+        });
+    } else {
+        //response.statusCode = 403;
+    }
 
-  response.write('Hello world from nodemailer');
+    response.write('Hello world from nodemailer');
 
-  response.end();
+    response.end();
 });
 
-server.listen(getPort(), hostname, () => {
-  console.log(`Server running at http://${hostname}:${getPort()}/`);
+app.listen(process.env.PORT || 8000, function () {
+    console.log('Node app is working on ' + process.env.PORT + '!');
 });
