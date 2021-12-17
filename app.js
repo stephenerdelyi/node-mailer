@@ -5,8 +5,16 @@ const path = require('path');
 const Params = require('./params');
 const Mailer = require('./mailer');
 
+app.options('/send', function(request, response) {
+    response.setHeader('Access-Control-Allow-Origin', 'https://next-portfolio.steveerdelyi.com');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS, POST, PUT');
+    response.end();
+});
+
 app.post('/send', function(request, response) {
-    response.setHeader('Content-Type', 'application/json');
+    response.setHeader('Content-Type', 'text/plain');
+    response.setHeader('Access-Control-Allow-Origin', 'https://next-portfolio.steveerdelyi.com');
+
     response.statusCode = 200;
 
     const params = new Params;
